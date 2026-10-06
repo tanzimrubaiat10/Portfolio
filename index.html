@@ -14,6 +14,76 @@
   <link href="https://fonts.googleapis.com/css2?family=Playwrite+GB+J&family=Cause&display=swap" rel="stylesheet" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" /></noscript>
   <style>
+ /* PRELOADER STYLES */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #090d16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+#preloader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.hello-svg {
+  width: min(320px, 80vw);
+  height: auto;
+  overflow: visible;
+}
+
+.hello-path {
+  font-family: 'Playwrite GB J', 'Quintessential', cursive;
+  font-size: 90px;
+  fill: transparent;
+  stroke: #00f5a0;
+  stroke-width: 2.5px;
+  stroke-dasharray: 400;
+  stroke-dashoffset: 400;
+  animation: drawHello 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards, fillText 0.6s 1.8s forwards;
+}
+
+@keyframes drawHello {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fillText {
+  to {
+    fill: #00f5a0;
+    stroke: transparent;
+  }
+}
+
+.progress-bar-wrap {
+  width: 180px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #00f5a0, #7d41f3);
+  border-radius: 4px;
+  transition: width 0.1s linear;
+}
     :root {
       --bg:#090d16;--bg2:#0d1220;--accent:#00f5a0;--accent2:#00c97f;--purple:#7d41f3;
       --white:#f0f4ff;--muted:#8892a4;--glass-bg:rgba(255,255,255,0.025);
@@ -237,6 +307,35 @@
     .footer-links a:hover{color:var(--accent);}
     .footer-links a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px;}
     .footer-copy{font-size:0.78rem;color:rgba(136,146,164,0.55);}
+    /* FOOTER SOCIAL ICONS */
+    .social-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-bd);
+      color: var(--muted);
+      transition: var(--transition);
+    }
+    .social-icon:hover {
+      color: var(--accent);
+      background: rgba(0, 245, 160, 0.1);
+      border-color: rgba(0, 245, 160, 0.3);
+      transform: translateY(-3px);
+    }
+    .social-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
     /* MODAL */
     .modal-overlay{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(5,8,14,0.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:opacity 0.4s ease,visibility 0.4s ease;overflow-y:auto;}
     .modal-overlay.open{opacity:1;visibility:visible;}
@@ -406,6 +505,17 @@
   </style>
 </head>
 <body>
+  <!-- Custom Preloader -->
+<div id="preloader">
+  <div class="preloader-content">
+    <svg class="hello-svg" viewBox="0 0 500 150">
+      <text x="50%" y="60%" text-anchor="middle" class="hello-path">hello</text>
+    </svg>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="preloaderProgress"></div>
+    </div>
+  </div>
+</div>
   <a href="#hero" class="skip-link">Skip to content</a>
   <div class="bg-canvas" aria-hidden="true">
     <div class="blob blob-1"></div>
@@ -456,13 +566,13 @@
           <div class="hero-divider" aria-hidden="true"></div>
           <div class="hero-tagline-block">
             <strong>Great websites should feel effortless.</strong><br>
-            <p><b>I Build Premium, High-Converting frontend websites For Local Businesses</b><br>
+            <p><b>I turn local business Facebook pages and basic listings into high-speed, customer-booking websites.</b><br>
               Whether you run a restaurant, clinic, contracting firm, or real estate agency,
               I craft fast, conversion-focused websites that make your brand impossible to ignore,
               built on Wix, Framer, or raw code. No fluff. No filler. Just results.</p>
           </div>
           <div class="hero-actions">
-            <a href="#contact" class="btn-primary magnetic-btn">Discuss Your Project <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></a>
+            <button type="button" class="btn-primary magnetic-btn" id="heroPreviewBtn">Get a Free Homepage Preview <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button>
             <a href="#portfolio" class="btn-ghost magnetic-btn">View My Work <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></a>
           </div>
           <div class="hero-services" role="list" aria-label="Services">
@@ -534,32 +644,35 @@
             <p class="section-sub">Three focused service pillars, each designed to give local businesses a complete online presence, from visuals to ranking on Google.</p>
           </div>
           <div class="cards-3">
-            <div class="service-card reveal reveal-delay-1"><p class="service-num">01 &mdash; Design</p><h3>Visual Interface Design</h3><p>High-fidelity mockups and interactive prototypes crafted to your brand's personality. You see exactly what you're getting before a single line of code is written.</p><div class="service-tags"><span class="tag">Figma Mockups</span><span class="tag">UX Flows</span><span class="tag">Brand Alignment</span></div></div>
-            <div class="service-card reveal reveal-delay-2"><p class="service-num">02 &mdash; Development</p><h3>Wix &amp; Framer Custom Development</h3><p>Your approved design, transformed into a fully functional, fast-loading website. I work in Wix, Framer, or raw HTML/CSS/JS, whatever gives you the best result.</p><div class="service-tags"><span class="tag">Wix Studio</span><span class="tag">Framer</span><span class="tag">Raw Code</span></div></div>
-            <div class="service-card reveal reveal-delay-3"><p class="service-num">03 &mdash; Growth</p><h3>SEO Blueprint Setup</h3><p>On-page SEO foundations installed from day one: structured headings, clean meta tags, schema markup, sitemap, fast core web vitals, and local business optimization.</p><div class="service-tags"><span class="tag">On-Page SEO</span><span class="tag">Local Schema</span><span class="tag">Core Web Vitals</span></div></div>
+            <div class="service-card reveal reveal-delay-1"><p class="service-num">01 &mdash; Design</p><h3>Brand Authority & Layout Design</h3><p>High-fidelity mockups and interactive prototypes crafted to your brand's personality.So your business looks like the top choice in your city.</p><div class="service-tags"><span class="tag">Figma Mockups</span><span class="tag">UX Flows</span><span class="tag">Brand Alignment</span></div></div>
+            <div class="service-card reveal reveal-delay-2"><p class="service-num">02 &mdash; Development</p><h3>High-Speed Mobile Engineering</h3><p>Built to load instantly on slow cell networks so you never lose a customer. Your approved design, transformed into a fully functional, fast-loading website.</p><div class="service-tags"><span class="tag">Wix Studio</span><span class="tag">Framer</span><span class="tag">Raw Code</span></div></div>
+            <div class="service-card reveal reveal-delay-3"><p class="service-num">03 &mdash; Growth</p><h3>Google Search Visibility</h3><p>On-page SEO foundations installed from day one:Setting up the core foundation so your business ranks when locals look for your services.</p><div class="service-tags"><span class="tag">On-Page SEO</span><span class="tag">Local Schema</span><span class="tag">Core Web Vitals</span></div></div>
           </div>
         </div>
       </section>
       <section id="portfolio" aria-labelledby="portfolio-heading">
         <div class="container">
-          <div class="portfolio-header reveal"><p class="section-label">Concept Layouts &amp; Blueprints</p><h2 class="section-title" id="portfolio-heading">Featured Design Work</h2></div>
-          <div class="portfolio-disclaimer reveal"><span class="disc-icon" aria-hidden="true">💡</span><p><strong>These are high-fidelity visual blueprints.</strong> I specialize in taking these custom designs and developing them into lightning-fast, fully responsive websites using <strong>Wix, Framer, or Raw Code.</strong> Each concept below was purpose-built for a specific local business category.</p></div>
+          <div class="portfolio-header reveal"><p class="section-label">Launched Production Work</p><h2 class="section-title" id="portfolio-heading">Featured Design & Work</h2></div>
+          <div class="portfolio-disclaimer reveal"><span class="disc-icon" aria-hidden="true">💡</span><p><strong>High-speed frontend systems built for local business operations. Fully responsive, optimized for core web vitals, and live on the production web.</strong> I specialize in taking these custom designs and developing them into lightning-fast, fully responsive websites using <strong>Wix, Framer, or Raw Code.</strong> Each system below was purpose-built for a specific local business category.</p></div>
           <div class="portfolio-filters reveal" role="group" aria-label="Filter portfolio by category">
             <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
-            <button class="filter-btn" data-filter="restaurant" aria-pressed="false">Restaurant</button>
+            <button class="filter-btn" data-filter="plumbing" aria-pressed="false">Plumbing</button>
             <button class="filter-btn" data-filter="salon" aria-pressed="false">Beauty Salon &amp; Spa</button>
             <button class="filter-btn" data-filter="gym" aria-pressed="false">Gym &amp; Fitness</button>
-            <button class="filter-btn" data-filter="cafe" aria-pressed="false">Coffee Shop/Café</button>
-            <button class="filter-btn" data-filter="clothing" aria-pressed="false">Fashion &amp; Apparel</button>
+            <button class="filter-btn" data-filter="landscaper" aria-pressed="false">Landscaper</button>
+            <button class="filter-btn" data-filter="dentist" aria-pressed="false">Dentist</button>
+            <button class="filter-btn" data-filter="fashion" aria-pressed="false">Fashion & Apparel</button>
             <button class="filter-btn" data-filter="realestate" aria-pressed="false">Real Estate</button>
           </div>
           <div class="portfolio-grid" id="portfolioGrid" role="list">
-            <div class="p-card reveal reveal-delay-1" tabindex="0" role="listitem" data-category="restaurant" data-website="#"><img src="Restaurant_Mockup.png" alt="Restaurant website concept" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Restaurant_Mockup.png</div><div class="p-overlay"><p class="p-overlay-label">Restaurant</p><h4>Upscale Dining Experience</h4><p>Dark-luxury concept with full-screen hero, interactive menu, and table reservation flow.</p><button class="p-view-btn">View Concept <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
-            <div class="p-card reveal reveal-delay-2" tabindex="0" role="listitem" data-category="salon" data-website="#"><img src="Spa_Mockup.png" alt="Beauty Salon website concept" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Spa_Mockup.png</div><div class="p-overlay"><p class="p-overlay-label">Beauty Salon &amp; Spa</p><h4>Luxury Salon &amp; Beauty Studio</h4><p>Elegant service-focused design with beauty showcases, stylist profiles, and client testimonials.</p><button class="p-view-btn">View Concept <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
-            <div class="p-card wide reveal" tabindex="0" role="listitem" data-category="gym" data-website="#"><img src="Gym_Mockup.png" alt="Gym website concept" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Gym_Mockup.png</div><div class="p-overlay"><p class="p-overlay-label">Gym &amp; Fitness</p><h4>Elite Fitness Center</h4><p>Bold, high-energy layout with trainer showcases, membership highlights, and motivating visuals.</p><button class="p-view-btn">View Concept <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
-            <div class="p-card reveal reveal-delay-1" tabindex="0" role="listitem" data-category="cafe" data-website="#"><img src="Coffee_Shop_Mockup.png" alt="Coffee Shop website concept" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Coffee_Shop_Mockup.png</div><div class="p-overlay"><p class="p-overlay-label">Coffee Shop &amp; Café</p><h4>Artisan Coffee House</h4><p>Warm, inviting layout with menu highlights, signature drinks, and online ordering flow.</p><button class="p-view-btn">View Concept <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
-            <div class="p-card reveal reveal-delay-2" tabindex="0" role="listitem" data-category="clothing" data-website="#"><img src="Clothing_Mockup.png" alt="Fashion website concept" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Clothing_Mockup.png</div><div class="p-overlay"><p class="p-overlay-label">Fashion &amp; Apparel</p><h4>Modern Fashion Storefront</h4><p>Stylish retail concept with featured collections, brand storytelling, and seasonal campaigns.</p><button class="p-view-btn">View Concept <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
-            <div class="p-card wide reveal" tabindex="0" role="listitem" data-category="realestate" data-website="https://realestate06.netlify.app/"><img src="Real_Estate_Mockup.png" alt="Real Estate website concept" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Real_Estate_Mockup.png</div><div class="p-overlay"><p class="p-overlay-label">Real Estate</p><h4>Luxury Property Agency</h4><p>Premium listing layout with map integration, filter UI, and agent contact flows.</p><button class="p-view-btn">View Concept <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
+            <div class="p-card reveal reveal-delay-1" tabindex="0" role="listitem" data-category="plumbing" data-website="https://plumbing-website00.netlify.app/"><img src="https://api.microlink.io/?url=https%3A%2F%2Fplumbing-website00.netlify.app%2F&screenshot=true&meta=false&embed=screenshot.url" alt="Plumbing Website" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Plumbing_Mockup.png</div><div class="p-overlay"><p class="p-overlay-label">Plumbing</p><h4>Pipe Forge</h4><p>A fully launched premium plumbing platform equipped with an interactive issue diagnostic system, high-conversion emergency booking flows, and live verified job logs.</p><button class="p-view-btn">View Website<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
+            <div class="p-card reveal reveal-delay-2" tabindex="0" role="listitem" data-category="salon" data-website="https://spa-website00.netlify.app/"><img src="https://api.microlink.io/?url=https%3A%2F%2Fspa-website00.netlify.app%2F&screenshot=true&meta=false&embed=screenshot.url" alt="Beauty Salon website" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Salon_Mockup.png</div><div class="p-overlay"><p class="p-overlay-label">Luxury Salon & Beauty Studio</p><h4>Luméra</h4><p>A fully functional, live production-ready platform developed with real-time treatment filters, an automated multi-step booking wizard, and tiered membership architectures.</p><button class="p-view-btn">View Website <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
+            <div class="p-card wide reveal" tabindex="0" role="listitem" data-category="gym" data-website="https://forge-fitness00.netlify.app/"><img src="https://api.microlink.io/?url=https%3A%2F%2Fforge-fitness00.netlify.app%2F&screenshot=true&meta=false&embed=screenshot.url" alt="Gym website" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Fitness_Mockup.png</div><div class="p-overlay"><p class="p-overlay-label">Gym &amp; Fitness</p><h4>Forge Athletics</h4><p>A high-octane commercial fitness platform deployed with tabbed training regimen matrixes, data-driven progress charts, and tiered premium subscription layouts.</p><button class="p-view-btn">View Website<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
+            <div class="p-card reveal reveal-delay-1" tabindex="0" role="listitem" data-category="landscaper" data-website="https://landscaping-website00.netlify.app/"><img src="https://api.microlink.io/?url=https%3A%2F%2Flandscaping-website00.netlify.app%2F&screenshot=true&meta=false&embed=screenshot.url" alt="Landscaping website" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Landscaper_Mockup.png</div><div class="p-overlay"><p class="p-overlay-label">Landscaper</p><h4>Verdant</h4><p>A fully coded premium landscaping platform structured for high-ticket local services, equipped with dynamic structural before/after modules and a rich project gallery.</p><button class="p-view-btn">View Concept <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
+            <div class="p-card reveal reveal-delay-2" tabindex="0" role="listitem" data-category="dentist" data-website="https://dental-website00.netlify.app/"><img src="https://api.microlink.io/?url=https%3A%2F%2Fdental-website00.netlify.app%2F&screenshot=true&meta=false&embed=screenshot.url" alt="Dental website" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Dentist_Mockup.png</div><div class="p-overlay"><p class="p-overlay-label">Healthcare & Dental</p><h4>Lumina Dental</h4><p>A production-ready dental service platform engineered for high lead conversion, featuring interactive procedural accordions and dynamic smile-transformation modules.</p><button class="p-view-btn">View Website <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
+            <div class="p-card reveal reveal-delay-1" tabindex="0" role="listitem" data-category="plumbing" data-website="https://plumbing-website01.netlify.app/"><img src="https://api.microlink.io/?url=https%3A%2F%2Fplumbing-website01.netlify.app%2F&screenshot=true&meta=false&embed=screenshot.url" alt="Plumbing Website" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>FlowFix_Mockup.png</div><div class="p-overlay"><p class="p-overlay-label">Plumbing</p><h4>FlowFix Plumbing</h4><p>A live, conversion-optimized corporate platform structured for high-ticket local leads, featuring clean repair categories and integrated customer feedback systems.</p><button class="p-view-btn">View Website<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
+            <div class="p-card reveal reveal-delay-1" tabindex="0" role="listitem" data-category="fashion" data-website="https://clothingstoremockup.netlify.app/"><img src="https://api.microlink.io/?url=https%3A%2F%2Fclothingstoremockup.netlify.app%2F&screenshot=true&meta=false&embed=screenshot.url" alt="Fashion E-commerce Website" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>NEXORA Clothing Co</div><div class="p-overlay"><p class="p-overlay-label">Fashion & Apparel</p><h4>NEXORA Clothing Co.</h4><p>A fully functional, live  fashion e-commerce platform developed with dynamic product filters, a responsive grid system, and an integrated customer conversion funnel.</p><button class="p-view-btn">View Website<svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
+            <div class="p-card wide reveal" tabindex="0" role="listitem" data-category="realestate" data-website="https://realestate-website00.netlify.app/"><img src="https://api.microlink.io/?url=https%3A%2F%2Frealestate-website00.netlify.app%2F&screenshot=true&meta=false&embed=screenshot.url" alt="Real Estate website concept" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="p-placeholder" style="display:none;" aria-hidden="true"><svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="#8892a4" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Real_Estate_Mockup.png</div><div class="p-overlay"><p class="p-overlay-label">Real Estate</p><h4>Luxury Property Agency</h4><p>Premium listing layout with map integration, filter UI, and agent contact flows.</p><button class="p-view-btn">View Website <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg></button></div></div>
           </div>
         </div>
       </section>
@@ -593,12 +706,43 @@
             <div class="availability-pill"><span class="avail-dot" aria-hidden="true"></span>Currently accepting new clients, Worldwide</div>
           </div>
           <footer role="contentinfo">
-            <div class="logo"><span class="logo-dot" aria-hidden="true"></span>Rubaiat Tanzim<span>&nbsp;|&nbsp; Web Builder</span></div>
-            <nav class="footer-links" aria-label="Footer navigation">
-              <a href="#why">Why Me</a><a href="#services">Services</a><a href="#portfolio">Work</a><a href="#process">Process</a><a href="#contact">Contact</a>
-            </nav>
-            <p class="footer-copy">&copy; 2026 Rubaiat Tanzim. Crafted with precision.</p>
-          </footer>
+  <div class="logo">
+    <span class="logo-dot" aria-hidden="true"></span>
+    Rubaiat Tanzim<span>&nbsp;|&nbsp; Web Builder</span>
+  </div>
+
+  <nav class="footer-links" aria-label="Footer navigation">
+    <a href="#why">Why Me</a>
+    <a href="#services">Services</a>
+    <a href="#portfolio">Work</a>
+    <a href="#process">Process</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <div class="social-links" aria-label="Social profiles">
+    <!-- Facebook -->
+    <a href="https://www.facebook.com/rubaiat.tanzim" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="Facebook Profile">
+      <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+    </a>
+
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/_her.miyamura_?stkn=MW12YTY5NzJhMXVyaQ==" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profile">
+      <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+    </a>
+
+    <!-- LinkedIn -->
+    <a href="https://www.linkedin.com/in/rubaiat-tanzim" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
+      <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+    </a>
+
+    <!-- GitHub -->
+    <a href="https://github.com/tanzimrubaiat10" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
+      <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+    </a>
+  </div>
+
+  <p class="footer-copy">&copy; 2026 Rubaiat Tanzim. Crafted with precision.</p>
+</footer>
         </div>
       </section>
     </main>
@@ -649,6 +793,29 @@
     </div>
   </div>
   <script>
+    /* Preloader Script */
+(function () {
+  var preloader = document.getElementById('preloader');
+  var progress = document.getElementById('preloaderProgress');
+  if (!preloader || !progress) return;
+
+  var currentProgress = 0;
+  var interval = setInterval(function () {
+    currentProgress += Math.floor(Math.random() * 12) + 6;
+
+    if (currentProgress >= 100) {
+      currentProgress = 100;
+      progress.style.width = '100%';
+      clearInterval(interval);
+
+      setTimeout(function () {
+        preloader.classList.add('fade-out');
+      }, 400);
+    } else {
+      progress.style.width = currentProgress + '%';
+    }
+  }, 100);
+})();
   'use strict';
   var prefersReducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   (function(){var t=document.getElementById('typingText'),c=document.getElementById('typingCursor');if(!t||!c)return;var words=['Web Builder','Web Designer','Freelancer'],ts=90,ds=50,pa=1800,pb=380,wi=0,ci=0,del=false;if(prefersReducedMotion){t.textContent=words[0];c.style.display='none';return;}function cur(a){c.style.animation=a?'none':'cursorBlink 1s step-start infinite';if(a)c.style.opacity='1';}function tick(){var w=words[wi];if(!del){ci++;t.textContent=w.slice(0,ci);cur(true);t.setAttribute('aria-label',t.textContent);if(ci===w.length){t.setAttribute('aria-label',w);cur(false);del=true;setTimeout(tick,pa);}else setTimeout(tick,ts);}else{ci--;t.textContent=w.slice(0,ci);cur(true);if(ci===0){del=false;wi=(wi+1)%words.length;cur(false);setTimeout(tick,pb);}else setTimeout(tick,ds);}}setTimeout(tick,900);})();
@@ -662,6 +829,27 @@
   (function(){var btn=document.getElementById('hamburger'),menu=document.getElementById('mobileMenu'),cb=document.getElementById('mobileMenuClose');if(!btn||!menu)return;var links=menu.querySelectorAll('.mobile-link');function open(){btn.classList.add('open');menu.classList.add('open');btn.setAttribute('aria-expanded','true');menu.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';if(cb)setTimeout(function(){cb.focus();},60);}function close(){btn.classList.remove('open');menu.classList.remove('open');btn.setAttribute('aria-expanded','false');menu.setAttribute('aria-hidden','true');document.body.style.overflow='';btn.focus();}btn.addEventListener('click',function(){btn.classList.contains('open')?close():open();});if(cb)cb.addEventListener('click',close);links.forEach(function(l){l.addEventListener('click',close);});document.addEventListener('keydown',function(e){if(e.key==='Escape'&&menu.classList.contains('open'))close();});})();
   (function(){var ov=document.getElementById('leadModal'),modal=ov?ov.querySelector('.modal'):null,form=document.getElementById('leadForm'),sub=document.getElementById('leadSubmit'),cb=document.getElementById('modalClose'),sc=document.getElementById('successClose'),ops=document.querySelectorAll('[data-open-modal]');if(!ov||!modal||!form)return;var lf=null,FQ='button,[href],input,select,textarea,[tabindex]:not([tabindex="-1"])';function open(){lf=document.activeElement;ov.classList.add('open');ov.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';setTimeout(function(){var f=modal.querySelector('input,select,textarea');if(f)f.focus();},80);document.addEventListener('keydown',kd);}function close(){ov.classList.remove('open');ov.setAttribute('aria-hidden','true');document.body.style.overflow='';document.removeEventListener('keydown',kd);if(lf&&typeof lf.focus==='function')lf.focus();}ops.forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();open();});});cb.addEventListener('click',close);if(sc)sc.addEventListener('click',close);ov.addEventListener('mousedown',function(e){if(e.target===ov)close();});function kd(e){if(e.key==='Escape'){close();return;}if(e.key!=='Tab')return;var ns=Array.prototype.slice.call(modal.querySelectorAll(FQ)).filter(function(el){return el.offsetParent!==null&&!el.disabled;});if(!ns.length)return;var fi=ns[0],la=ns[ns.length-1];if(e.shiftKey&&document.activeElement===fi){e.preventDefault();la.focus();}else if(!e.shiftKey&&document.activeElement===la){e.preventDefault();fi.focus();}}function vf(f){var g=f.closest('.form-group'),ok=f.checkValidity()&&!(f.value.trim()===''&&f.required);if(g)g.classList.toggle('has-error',!ok);f.classList.toggle('invalid',!ok);return ok;}form.querySelectorAll('input,select,textarea').forEach(function(f){f.addEventListener('input',function(){if(f.closest('.form-group').classList.contains('has-error'))vf(f);});});function vform(){var fields=form.querySelectorAll('[required]'),av=true,fi=null;fields.forEach(function(f){var ok=vf(f);if(!ok&&!fi)fi=f;if(!ok)av=false;});if(fi)fi.focus();return av;}form.addEventListener('submit',function(e){e.preventDefault();if(!vform())return;sub.disabled=true;sub.classList.add('loading');fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}}).then(function(r){if(!r.ok)throw new Error('err');modal.classList.add('show-success');modal.scrollTop=0;form.reset();if(sc)sc.focus();}).catch(function(){alert('Something went wrong. Please try again or email me directly.');}).finally(function(){sub.disabled=false;sub.classList.remove('loading');});});ov.addEventListener('transitionend',function(e){if(e.propertyName==='opacity'&&!ov.classList.contains('open'))modal.classList.remove('show-success');});})();
   (function(){var ov=document.getElementById('lightboxOverlay'),img=document.getElementById('lightboxImg'),vb=document.getElementById('lightboxVisitBtn'),cb=document.getElementById('lightboxCloseBtn'),xb=document.getElementById('lightboxX'),ll=document.getElementById('lbLabel'),lt=document.getElementById('lbTitle');if(!ov)return;var lf=null;function open(d){lf=document.activeElement;img.src=d.imgSrc;img.alt=d.imgAlt||'';ll.textContent=d.label||'';lt.textContent=d.title||'';if(d.website&&d.website!=='#'){vb.href=d.website;vb.style.display='inline-flex';vb.innerHTML='Visit the Website <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>';vb.style.opacity='1';vb.style.pointerEvents='auto';vb.style.cursor='pointer';}else{vb.style.display='inline-flex';vb.innerHTML='🚧 &nbsp;Site Coming Soon';vb.style.opacity='0.5';vb.style.pointerEvents='none';vb.style.cursor='default';vb.removeAttribute('href');}ov.classList.add('open');ov.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';document.addEventListener('keydown',kd);setTimeout(function(){cb.focus();},80);}function close(){ov.classList.remove('open');ov.setAttribute('aria-hidden','true');document.body.style.overflow='';document.removeEventListener('keydown',kd);setTimeout(function(){img.src='';},400);if(lf&&typeof lf.focus==='function')lf.focus();}function kd(e){if(e.key==='Escape')close();}ov.addEventListener('mousedown',function(e){if(e.target===ov)close();});cb.addEventListener('click',close);xb.addEventListener('click',close);document.querySelectorAll('.p-view-btn').forEach(function(btn){btn.addEventListener('click',function(e){e.stopPropagation();var card=btn.closest('.p-card'),imgEl=card.querySelector('img'),label=card.querySelector('.p-overlay-label'),title=card.querySelector('.p-overlay h4'),website=card.getAttribute('data-website')||'#';open({imgSrc:imgEl?imgEl.src:'',imgAlt:imgEl?imgEl.alt:'',label:label?label.textContent:'',title:title?title.textContent:'',website:website});});});})();
+    (function(){
+  var heroBtn = document.getElementById('heroPreviewBtn');
+  var contactBtn = document.querySelector('#contact [data-open-modal]');
+  
+  if (!heroBtn) return;
+
+  heroBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    
+    var contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    setTimeout(function(){
+      if (contactBtn) {
+        contactBtn.click();
+      }
+    }, 600);
+  });
+})();
   </script>
 </body>
 </html>
